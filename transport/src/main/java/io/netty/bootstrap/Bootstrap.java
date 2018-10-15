@@ -160,6 +160,7 @@ public class Bootstrap extends AbstractBootstrap<Bootstrap, Channel> {
      * @see {@link #connect()}
      */
     private ChannelFuture doResolveAndConnect(final SocketAddress remoteAddress, final SocketAddress localAddress) {
+        // 初始化并注册一个 Channel 对象，因为注册是异步的过程，所以返回一个 ChannelFuture 对象。
         final ChannelFuture regFuture = initAndRegister();
         final Channel channel = regFuture.channel();
 
@@ -167,6 +168,7 @@ public class Bootstrap extends AbstractBootstrap<Bootstrap, Channel> {
             if (!regFuture.isSuccess()) {
                 return regFuture;
             }
+            // 解析远程地址，并进行连接
             return doResolveAndConnect0(channel, remoteAddress, localAddress, channel.newPromise());
         } else {
             // Registration future is almost always fulfilled already, but just in case it's not.
@@ -204,7 +206,7 @@ public class Bootstrap extends AbstractBootstrap<Bootstrap, Channel> {
                 doConnect(remoteAddress, localAddress, promise);
                 return promise;
             }
-
+            // 解析远程地址，并进行连接
             final Future<SocketAddress> resolveFuture = resolver.resolve(remoteAddress);
 
             if (resolveFuture.isDone()) {

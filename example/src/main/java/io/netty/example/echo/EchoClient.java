@@ -71,6 +71,7 @@ public final class EchoClient {
              });
 
             // Start the client.
+            // 连接服务器，并同步等待成功，即启动客户端
             ChannelFuture f = b.connect(HOST, PORT).sync();
 
             // Wait until the connection is closed.

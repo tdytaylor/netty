@@ -466,6 +466,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                 return;
             }
 
+            // 设置 Channel 的 eventLoop 属性
             AbstractChannel.this.eventLoop = eventLoop;
 
             if (eventLoop.inEventLoop()) {
@@ -530,6 +531,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 
         @Override
         public final void bind(final SocketAddress localAddress, final ChannelPromise promise) {
+            // 判断是否在 EventLoop 的线程中。
             assertEventLoop();
 
             if (!promise.setUncancellable() || !ensureOpen(promise)) {
