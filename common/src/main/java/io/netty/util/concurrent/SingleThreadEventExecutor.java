@@ -753,10 +753,16 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
             throw new NullPointerException("task");
         }
 
+        /**
+         * 调用 inEventLoop()第一次的时候是main线程执行，nioeventloop底层的线程还没创建，返回false
+         */
         boolean inEventLoop = inEventLoop();
         if (inEventLoop) {
             addTask(task);
         } else {
+            /**
+             * 第一次执行的逻辑，创建nioeventloop底层线程
+             */
             startThread();
             addTask(task);
             if (isShutdown() && removeTask(task)) {
@@ -870,6 +876,9 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
                 boolean success = false;
                 updateLastExecutionTime();
                 try {
+                    /**
+                     * 执行绑定操作的主要逻辑{@link io.netty.channel.nio.NioEventLoop#run()}
+                     */
                     SingleThreadEventExecutor.this.run();
                     success = true;
                 } catch (Throwable t) {

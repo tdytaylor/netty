@@ -82,7 +82,7 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
     for (int i = 0; i < nThreads; i++) {
       boolean success = false;
       try {
-        // 创建 EventExecutor 对象
+        // 创建 EventExecutor 对象(也就是创建EvenLoop)
         children[i] = newChild(executor, args);
         success = true;
       } catch (Exception e) {
@@ -131,6 +131,7 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
   }
 
   protected ThreadFactory newDefaultThreadFactory() {
+    // 传入当前类，也就是NioEventLoopGroup
     return new DefaultThreadFactory(getClass());
   }
 

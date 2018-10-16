@@ -135,6 +135,14 @@ public final class NioEventLoop extends SingleThreadEventLoop {
     private int cancelledKeys;
     private boolean needsToSelectAgain;
 
+    /**
+     *  一个 NioEventLoop对应一个Selector
+     * @param parent
+     * @param executor
+     * @param selectorProvider
+     * @param strategy
+     * @param rejectedExecutionHandler
+     */
     NioEventLoop(NioEventLoopGroup parent, Executor executor, SelectorProvider selectorProvider,
                  SelectStrategy strategy, RejectedExecutionHandler rejectedExecutionHandler) {
         super(parent, executor, false, DEFAULT_MAX_PENDING_TASKS, rejectedExecutionHandler);
@@ -730,6 +738,11 @@ public final class NioEventLoop extends SingleThreadEventLoop {
         }
     }
 
+    /**
+     * nioeventloop检测io事件，并且解决nio空轮训的bug
+     * @param oldWakenUp
+     * @throws IOException
+     */
     private void select(boolean oldWakenUp) throws IOException {
         Selector selector = this.selector;
         try {
