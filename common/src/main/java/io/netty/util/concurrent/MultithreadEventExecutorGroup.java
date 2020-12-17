@@ -73,6 +73,7 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
       throw new IllegalArgumentException(String.format("nThreads: %d (expected: > 0)", nThreads));
     }
 
+    // 创建执行器
     if (executor == null) {
       executor = new ThreadPerTaskExecutor(newDefaultThreadFactory());
     }
